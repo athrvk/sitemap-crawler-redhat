@@ -11,6 +11,10 @@ app.use(express.json());
 
 app.use('/crawl', crawler);
 
+app.get('/health', (req, res) => {
+    res.sendStatus(200);
+});
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + 'client/index.html');
 });
