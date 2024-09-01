@@ -32,7 +32,7 @@ async function crawlPage(baseUrl, currentUrl, includeParentPath, level = 0) {
     const visited = new Set();
     const linksCache = new Map(); // Map to store links for each page
     let linksCacheHits = 0;
-    const contentCache = new Map();
+    const contentCache = new Map(); // Map to store html content for each page
     let contentCacheHits = 0;
 
     while (queue.length > 0) {
