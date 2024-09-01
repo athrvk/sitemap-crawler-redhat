@@ -1,0 +1,19 @@
+{
+  "name": "web-crawler-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atharva Kusumbia",
+  "license": "ISC",
+  "description": "A web crawler service which fetches the site map of the current domain",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "node-cache": "^5.1.2"
+  }
+}
