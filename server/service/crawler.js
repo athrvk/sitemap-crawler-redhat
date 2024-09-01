@@ -43,7 +43,17 @@ async function crawlPage(baseUrl, currentUrl, includeParentPath, level = 0) {
         visited.add(url);
 
         try {
-            const response = await fetch(url, { signal: AbortSignal.timeout(2000) });
+            let response;
+            try {
+                response = await fetch(url, { signal: AbortSignal.timeout(2000) });
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.error(`Request timed out for ${url}`);
+                    continue;
+                }
+                throw error;
+            }
+
             const html = await response.text();
             const $ = cheerio.load(html);
 
