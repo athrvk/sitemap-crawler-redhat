@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
         if (!includeParentPath) {
             isRootPath = crawler.isRootPath(targetUrl);
         }
-        console.log(`is root path: ${isRootPath} then include parent path: ${isRootPath || includeParentPath}`);
+
         // calculate time taken to crawl
         const startTime = process.hrtime();
         let sitemap;
@@ -30,8 +30,7 @@ router.post('/', async (req, res) => {
         }
         const endTime = process.hrtime(startTime);
         console.log(`Time taken to crawl ${targetUrl}: %ds %dms`, endTime[0], endTime[1] / 1000000);
-        console.log(`Crawled ${targetUrl} with sitemap size:`, Object.keys(sitemap).length);
-        console.log(`Cache size: `, cache.getStats().keys);
+        console.log(`URL Cache size: `, cache.getStats().keys);
         res.json({ sitemap, timeTaken: `${endTime[0]}s ${(endTime[1] / 1000000).toFixed(2)}ms` });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while crawling', message: error.message });

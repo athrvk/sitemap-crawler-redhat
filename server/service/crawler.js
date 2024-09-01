@@ -31,35 +31,34 @@ async function crawlPage(baseUrl, currentUrl, includeParentPath, level = 0) {
     const queue = [{ url: currentUrl, level, parent: sitemap[currentUrl] }];
     const visited = new Set();
     const linksCache = new Map(); // Map to store links for each page
+    let linksCacheHits = 0;
+    const contentCache = new Map();
+    let contentCacheHits = 0;
 
     while (queue.length > 0) {
         const { url, level: currentLevel, parent } = queue.shift();
 
-        if (visited.has(url)) {
-            console.log(`Skipping ${url} because it has already been crawled`);
-            continue;
-        }
-
         visited.add(url);
 
         try {
-            let response;
-            try {
-                response = await fetch(url, { signal: AbortSignal.timeout(2000) });
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    console.error(`Request timed out for ${url}`);
-                    continue;
-                }
-                throw error;
+            let htmlContent;
+
+            if (contentCache.has(url)) {
+                contentCacheHits++;
+                console.log(`Getting html from cache for ${url}`);
+                htmlContent = contentCache.get(url);
+            } else {
+                const response = await fetch(url, { signal: AbortSignal.timeout(2000) });
+                htmlContent = await response.text();
+                contentCache.set(url, htmlContent);
             }
 
-            const html = await response.text();
-            const $ = cheerio.load(html);
+            const $ = cheerio.load(htmlContent);
 
             let links;
             if (linksCache.has(url)) {
-                console.log(`Get links from cache for ${url}`);
+                linksCacheHits++;
+                console.log(`Getting links from cache for ${url}`);
                 links = linksCache.get(url);
             } else {
                 links = getLinks($, url, visited, includeParentPath);
@@ -68,7 +67,7 @@ async function crawlPage(baseUrl, currentUrl, includeParentPath, level = 0) {
 
             for (const link of Object.keys(links)) {
                 parent[link] = {};
-                if (currentLevel > 1) {
+                if (currentLevel > 1 && !visited.has(link)) {
                     queue.push({ url: link, level: currentLevel - 1, parent: parent[link] });
                 }
             }
@@ -79,6 +78,8 @@ async function crawlPage(baseUrl, currentUrl, includeParentPath, level = 0) {
         }
     }
 
+    console.log(`Content Cache hits:`, contentCacheHits, ` and links cache hits:`, linksCacheHits);
+    console.log(`Visited ${visited.size} pages`);
     return sitemap;
 };
 
