@@ -10,6 +10,7 @@ function App() {
   const [sitemap, setSitemap] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const hostUrl = import.meta.env.PROD ? window.location.href : 'http://localhost:3000/'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ function App() {
     setTimeTaken('');
 
     try {
-      fetch('http://localhost:3000/crawl', {
+      fetch(`${hostUrl}crawl`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, includeParentPath, depth }),
