@@ -16,5 +16,16 @@ Start the server using `npm start`.
 
 Open http://localhost:3000 in your browser.
 
-
 You can test using https://demo.cyotek.com/ website
+
+
+## Known Issues
+
+The include parent path checkbox is not perfect implementation of its logic, it has issues when root path has redirections.
+
+The depth condition needs improvement. If it shows just 1 link in case of any level set include parent path checkbox.
+
+There is no parallel processing implemented yet. I can do it using promises but the implementation needs a bit more time.
+
+For depths greater than 3 it takes almost forever (more than 3 minutes) on a famous website.
+
