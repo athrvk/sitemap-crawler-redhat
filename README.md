@@ -8,7 +8,7 @@ This project is created on linux, so it might not work on Windows(haven't tested
 ## Installation
 
 Clone the repository and install the dependencies using `npm install`.
-You don't have change directory, its done automatically.
+You don't have to change directory, its done using the install script.
 
 ## Usage
 
