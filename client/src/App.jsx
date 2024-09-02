@@ -10,7 +10,7 @@ function App() {
   const [sitemap, setSitemap] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const hostUrl = import.meta.env.PROD ? window.location.href : 'http://localhost:3000/'
+  const hostUrl = import.meta.env.MODE === 'production' ? window.location.href : 'http://localhost:3000/'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
