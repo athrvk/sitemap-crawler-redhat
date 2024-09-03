@@ -6,6 +6,7 @@ function App() {
   const [url, setUrl] = useState('');
   const [depth, setDepth] = useState(1);
   const [includeParentPath, setIncludeParentPath] = useState(false);
+  const [clearCache, setClearCache] = useState(false)
   const [timeTaken, setTimeTaken] = useState('');
   const [sitemap, setSitemap] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,7 @@ function App() {
       fetch(`${hostUrl}crawl`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, includeParentPath, depth }),
+        body: JSON.stringify({ url, includeParentPath, depth, clearCache }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -58,6 +59,10 @@ function App() {
           <label>
             <input type="checkbox" checked={includeParentPath} onChange={(e) => setIncludeParentPath(e.target.checked)} />
             Include parent path
+          </label>
+          <label>
+            <input type="checkbox" checked={clearCache} onChange={(e) => setClearCache(e.target.checked)} />
+            Force cache miss
           </label>
           <label>
             <input type='number' value={depth} onChange={(e) => setDepth(Number(e.target.value))} min={1} style={{ width: '50px', height: '25px', textAlign: 'center' }} />

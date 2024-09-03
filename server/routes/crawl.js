@@ -6,7 +6,7 @@ const crawler = require('../service/crawler')
 const cache = new nodeCache({ stdTTL: 60 * 60 * 24, forceString: true }); // 1 day
 
 router.post('/', async (req, res) => {
-    const { url: targetUrl, includeParentPath, depth: level } = req.body;
+    const { url: targetUrl, includeParentPath, depth: level, clearCache } = req.body;
     if (!targetUrl) {
         return res.status(400).json({ error: 'URL is required' });
     }
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         const startTime = process.hrtime();
         let sitemap;
         const cacheKey = JSON.stringify({ targetUrl, level });
-        if (cache.has(cacheKey)) {
+        if (!clearCache && cache.has(cacheKey)) {
             console.log(`Cache hit for ${targetUrl}`);
             sitemap = cache.get(cacheKey);
         } else {

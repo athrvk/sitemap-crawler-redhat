@@ -3,16 +3,17 @@ const url = require('url');
 const { isRootPath, isSameDomain, hasSameParentPath } = require('../utils/utils');
 
 
-const getLinks = ($, currentUrl, visited, includeParentPath) => {
+const getLinks = ($, currentUrlString, visited, includeParentPath) => {
     const links = {};
 
     $('a').each((i, element) => {
         const href = $(element).attr('href');
         // console.log(`\tFound link ${href}`);
         if (href) {
-            const fullUrl = new url.URL(href, currentUrl);
+            const fullUrl = new url.URL(href, currentUrlString);
+            const currentUrl = new url.URL(currentUrlString);
             // console.log(`\t\tFull URL: ${fullUrl}`);
-            if (!visited.has(fullUrl) && isSameDomain(currentUrl, fullUrl) && fullUrl.href !== currentUrl) {
+            if (!visited.has(fullUrl) && isSameDomain(currentUrl, fullUrl) && fullUrl.href !== currentUrl.href) {
                 if (includeParentPath || hasSameParentPath(fullUrl, currentUrl)) {
                     links[fullUrl] = {};
                 }
@@ -61,6 +62,7 @@ async function crawlPage(baseUrl, currentUrl, includeParentPath, level = 0) {
                 console.log(`Getting links from cache for ${url}`);
                 links = linksCache.get(url);
             } else {
+                // console.log(`Extracting links from ${url}`);
                 links = getLinks($, url, visited, includeParentPath);
                 linksCache.set(url, links);
             }

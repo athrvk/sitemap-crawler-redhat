@@ -13,7 +13,7 @@ const isRootPath = (targetUrl) => {
 }
 
 const hasSameParentPath = (baseUrl, currentUrl) => {
-    return baseUrl.pathname === currentUrl.pathname || baseUrl.pathname.startsWith(`${currentUrl.pathname}/`);
+    return baseUrl.pathname === currentUrl.pathname || baseUrl.pathname.startsWith(`${currentUrl.pathname}`);
 }
 
 module.exports = { isSameDomain, isRootPath, hasSameParentPath }
