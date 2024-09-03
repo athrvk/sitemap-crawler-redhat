@@ -57,7 +57,7 @@ docker pull athrvk/sitemap-crawler:latest
 Run the Docker container:
 
 ```
-docker run -p 3000:3000 athrvk/sitemap-crawler:latest
+docker run --pull=always -p 3000:3000 athrvk/sitemap-crawler:latest
 ```
 
 Then access the application at `http://localhost:3000`
