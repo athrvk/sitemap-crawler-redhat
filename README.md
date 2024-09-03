@@ -23,7 +23,7 @@ Sitemap Crawler is a web service that fetches the sitemap of a given domain. It'
 
    ```
    git clone https://github.com/athrvk/sitemap-crawler-redhat.git
-   cd sitemap-crawler
+   cd sitemap-crawler-redhat
    ```
 
 2. Install dependencies:
